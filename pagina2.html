@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERO TIME</title>
+    <link rel="stylesheet" href="pagina2estilos.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/9985/9985721.png">
+
+    <!-- Fuente recomendada -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="main-header">
+    <h1>AERO TIME</h1>
+    <div class="nav-zonas">
+        <button onclick="irPagina('japon')">Japón</button>
+        <button onclick="irPagina('venezuela')">Venezuela</button>
+        <button onclick="irPagina('spain')">España</button>
+    </div>
+</header>
+
+<div class="contenedor">
+    <h2 id="region"></h2>
+    <main>
+
+        <!-- Calendario -->
+        <section class="calendario">
+            <div class="calendario">
+
+                <div class="header">
+                    <button onclick="mesAnterior()" class="btn-nav">◀</button>
+                    <h2 id="mes"></h2>
+                    <button onclick="mesSiguiente()" class="btn-nav">▶</button>
+                </div>
+
+                <div class="dias-semana">
+                    <div>Lun</div><div>Mar</div><div>Mié</div>
+                    <div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+                </div>
+
+                <div class="dias" id="dias"></div>
+            </div>
+        </section>
+
+        <!-- Reloj -->
+        <section class="reloj">
+            <div class="circulo">
+                <div class="hora aguja" id="hora"></div>
+                <div class="minuto aguja" id="minuto"></div>
+                <div class="segundo aguja" id="segundo"></div>
+                <div class="centro"></div>
+            </div>
+
+            <div class="info-reloj">
+                <div class="hora-digital" id="horaDigital"></div>
+                <div class="zona-horaria" id="zonaHoraria"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <button onclick="window.location.href='index.html'" class="btn-retorno">
+        Regresar a pagina inicial
+    </button>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const zona = params.get('zona') || 'venezuela';
+
+let timeZone = 'America/Caracas';
+let regionName = 'Venezuela';
+
+if (zona === 'japon') {
+    timeZone = 'Asia/Tokyo';
+    regionName = 'Japón';
+}
+
+if (zona === 'spain') {
+    timeZone = 'Europe/Madrid';
+    regionName = 'España';
+}
+
+document.getElementById("region").innerText = `Hora de ${regionName}`;
+
+function ahoraZona() {
+    return new Date(new Date().toLocaleString("en-US", { timeZone }));
+}
+
+function irPagina(zona){
+    window.location.href = `pagina2.html?zona=${zona}`;
+}
+</script>
+
+<script>
+let fecha = ahoraZona();
+
+function renderCalendario() {
+    const mes = fecha.getMonth();
+    const año = fecha.getFullYear();
+
+    const hoy = ahoraZona();
+    const diaActual = hoy.getDate();
+    const mesActual = hoy.getMonth();
+
+    const nombreMes = fecha.toLocaleString('es-ES', { month: 'long' });
+    document.getElementById("mes").innerText = `${nombreMes} ${año}`;
+
+    const primerDia = new Date(año, mes, 1).getDay();
+    const diasMes = new Date(año, mes + 1, 0).getDate();
+
+    const contenedor = document.getElementById("dias");
+    contenedor.innerHTML = "";
+
+    for (let i = 0; i < primerDia; i++) {
+        contenedor.innerHTML += "<div></div>";
+    }
+
+    for (let d = 1; d <= diasMes; d++) {
+        if (d === diaActual && mes === mesActual) {
+            contenedor.innerHTML += `<div class="hoy">${d}</div>`;
+        } else {
+            contenedor.innerHTML += `<div>${d}</div>`;
+        }
+    }
+}
+
+function mesSiguiente() {
+    fecha.setMonth(fecha.getMonth() + 1);
+    renderCalendario();
+}
+
+function mesAnterior() {
+    fecha.setMonth(fecha.getMonth() - 1);
+    renderCalendario();
+}
+
+renderCalendario();
+</script>
+
+<script>
+function actualizarReloj() {
+
+    const ahora = ahoraZona();
+
+    let h = ahora.getHours();
+    let m = ahora.getMinutes();
+    let s = ahora.getSeconds();
+
+    document.getElementById("horaDigital").innerText =
+        `${h.toString().padStart(2,'0')}:` +
+        `${m.toString().padStart(2,'0')}:` +
+        `${s.toString().padStart(2,'0')}`;
+
+    let rotHora = (h % 12) * 30 + m * 0.5;
+    let rotMin = m * 6;
+    let rotSeg = s * 6;
+
+    document.getElementById("hora").style.transform =
+        `translateX(-50%) rotate(${rotHora}deg)`;
+
+    document.getElementById("minuto").style.transform =
+        `translateX(-50%) rotate(${rotMin}deg)`;
+
+    document.getElementById("segundo").style.transform =
+        `translateX(-50%) rotate(${rotSeg}deg)`;
+}
+
+document.getElementById("zonaHoraria").innerText =
+`Zona horaria: ${timeZone}`;
+
+setInterval(actualizarReloj, 1000);
+actualizarReloj();
+</script>
+
+</body>
+</html>
