@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Este es tu titulo que aparece en la pestaña de tu navegador -->
+    <title>AERO TIME</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/9985/9985721.png">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Este es tu titulo -->
+<header class="header">
+    <h1 class="badge">AERO TIME</h1>
+</header>
+
+<!-- Este es tu contenido en la pagina -->
+<section class="principal">
+    <div>
+        <h1 class="titulo">
+            Consulta zonas horarias del mundo en segundos
+        </h1>
+        <p class="descripcion">
+            Esta página te permite explorar y comparar horarios de distintas ciudades del mundo de forma rápida,
+            clara y sin complicaciones. Ideal para programadores, viajeros o equipos que trabajan remoto.
+        </p>
+
+    </div>
+
+    <!-- tarjetas para rellenar la pagina inicial con un poco de animacion en css3-->
+    <section id="informacion" class="cards">
+
+        <div class="card" onclick="irPagina('japon')">
+            <div class="img-container">
+                <img src="https://www.countryflags.com/wp-content/uploads/japan-flag-png-large.png" alt="imagen 1">
+            </div>
+            <h3>Japón</h3>
+            <p>Revisar el horario y la fecha de Japón.</p>
+        </div>
+        <div class="card" onclick="irPagina('venezuela')">
+            <div class="img-container">
+                <img src="https://www.countryflags.com/wp-content/uploads/venezuela-flag-png-large.png" alt="imagen 2">
+            </div>
+            <h3>Venezuela</h3>
+            <p>Revisar el horario y la fecha de Venezuela.</p>
+        </div>
+        <div class="card" onclick="irPagina('spain')">
+            <div class="img-container">
+                <img src="https://www.countryflags.com/wp-content/uploads/spain-flag-png-large.png" alt="imagen 3">
+            </div>
+            <h3>España</h3>
+            <p>Revisar el horario y la fecha de España.</p>
+        </div>
+    </section>
+</section>
+<footer>
+    <p>© 2026 Proyecto de Esteban García</p>
+</footer>
+
+<!-- Este script redirige a la pagina 2 dependiendo de la zona horaria-->
+<script>
+    function irPagina(zona){
+        window.location.href = `pagina2.html?zona=${zona}`;
+    }
+</script>
+</body>
+</html>
